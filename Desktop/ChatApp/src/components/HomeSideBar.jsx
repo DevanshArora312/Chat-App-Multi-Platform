@@ -23,7 +23,7 @@ const HomeSideBar = ({props}) => {
         window.localStorage.removeItem("token");
         dispatch(setActive(null))
         dispatch(setToken(null))
-        navigate("/");
+        navigate("/login");
     }
     return (  
         <div className="w-full h-full flex flex-col items-center justify-between pb-5">

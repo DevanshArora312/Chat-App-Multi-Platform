@@ -18,9 +18,6 @@ function ChatList() {
     const handleChange = (e) =>{ 
         setContains(e.target.value)
     }
-    const clg = "10.100.5.253";
-    const flat = "192.168.1.13";
-    const ghar = "192.168.29.165"
 
     useEffect(()=>{
         fetch(`${url}api/chat/get-chats`,{method:"POST",headers:{"Content-Type" : "application/json"},body:JSON.stringify({token})})
@@ -39,7 +36,7 @@ function ChatList() {
                     return obj.user.name.toLowerCase().includes(contains.toLowerCase());
                 })
             }
-            console.log(result)
+            // console.log(result)
             dispatch(setChatList(result));
             setLoading(false);
         })
@@ -77,7 +74,7 @@ function ChatList() {
                         unread : item.unread
                     }
                     return(
-                        <button className='btnChat easeInOut duration-500 focus:outline-none ' key={index} onClick={()=>dispatch(setActive(item._id))}>
+                        <button className='btnChat easeInOut duration-500 focus:outline-none ' key={index} onClick={()=>{dispatch(setActive(item._id)); console.log("clicked",item._id,"and", activeChat)}}>
                             <SingleChatBox props={dataItem} activeChat={activeChat}/>
                         </button>
                     );

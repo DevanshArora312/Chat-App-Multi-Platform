@@ -4,7 +4,7 @@ export const chatListCont = createContext();
 const clg = "10.100.39.255";
 const flat = "192.168.1.12";
 const ghar = "192.168.29.165";
-export const url = `http://${flat}:3002/`
+export const url = `http://localhost:3002/`
 
 export const getTime = (timestamp) => {
     const months = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"]
