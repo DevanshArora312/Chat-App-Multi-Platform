@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
-import storage from 'redux-persist/lib/storage';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import listReducer from './slices/list';
 import activeReducer from './slices/active';
 import chatReducer from './slices/chat';
@@ -13,7 +12,7 @@ import authReducer from './slices/auth';
 
 const rootPersistConfig = {
   key: 'root',
-  storage,
+  storage  : AsyncStorage,
   keyPrefix: 'redux-',
   //   whitelist: [],
   //   blacklist: [],
