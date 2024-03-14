@@ -18,6 +18,7 @@ const mongoose = require("mongoose");
 const {userModel} = require("./models/users");
 const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
+const addMessage = require("./controllers/chatSocketController");
 
 app.use(express.json());
 app.use(cors());
@@ -44,21 +45,22 @@ io.on("connection",async socket => {
     if (socketId){
         socket.on("message_sent",async data=>{
             const socket_id_user_2 = await userModel.findById(data.user2);
-            // console.log("got chat -- ",data.chatId);
+            await addMessage(data);
             io.to(socket_id_user_2.socket_id).emit("new_message",{newChat : data.newChat, id : data.chatId,lastMess : data.newLastMess});
             io.to(socket_id_user_2.socket_id).emit("new_message_add",{newChat : data.newChat, id : data.chatId,lastMess : data.newLastMess});
         });
         
+        socket.on("end", async userId => {
+            if (Boolean(userId)){
+                await userModel.findByIdAndUpdate(userId, {status : "offline",socket_id : ""});
+                // io.to(Id2).emit("status_update",)
+            }   
+    
+            console.log("Closing connection!",u.name);
+            socket.disconnect(0);
+        });
     }
-    socket.on("end", async userId => {
-        if (Boolean(userId)){
-            await userModel.findByIdAndUpdate(userId, {status : "offline",socket_id : ""});
-            // io.to(Id2).emit("status_update",)
-        }   
-
-        console.log("Closing connection!",u.name);
-        socket.disconnect(0);
-    });
+    
 });
 
 server.listen(process.env.PORT, () => {

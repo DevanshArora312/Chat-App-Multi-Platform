@@ -36,46 +36,35 @@ function ChatWindow() {
             sentOn:Date.now(),
             id : activeChat
         }
-        fetch(`${url}api/chat/add-message`,{method:"POST",headers:{"Content-Type" : "application/json"},body:JSON.stringify(ob)})
-        .then(res => {
-            return res.json();
-        })
-        .then(data2 => {
-            if(data2.success){
-                const newChat = {
-                    content : ob.content,
-                    type : ob.type,
-                    sentOn : ob.sentOn,
-                    sentBy : data.reqUserId,
-                    read : false
+        try{
+            const newChat = {
+                content : ob.content,
+                type : ob.type,
+                sentOn : ob.sentOn,
+                sentBy : data.reqUserId,
+                read : false
+            }
+            const userTemp = data.reqUserId !== data.user2 ? data.user2 : data.user1;
+            dispatch(pushChat(newChat));
+            dispatch(updateLastMsg({read : false,type : "text",message :  newChat.content,id : activeChat,messName : "You",sentOn :newChat.sentOn}));
+            const socketData = {
+                newChat,
+                user2 : userTemp,
+                chatId : activeChat,
+                newLastMess : {
+                    read : false,
+                    type : "text",
+                    message : newChat.content,
+                    id : activeChat,
+                    messName : data.lastMessName,
+                    sentOn : newChat.sentOn
                 }
-                const userTemp = data.reqUserId !== data.user2 ? data.user2 : data.user1;
-                dispatch(pushChat(newChat));
-                dispatch(updateLastMsg({read : false,type : "text",message :  newChat.content,id : activeChat,messName : "You",sentOn :newChat.sentOn}));
-                const socketData = {
-                    newChat,
-                    user2 : userTemp,
-                    chatId : activeChat,
-                    newLastMess : {
-                        read : false,
-                        type : "text",
-                        message : newChat.content,
-                        id : activeChat,
-                        messName : data.lastMessName,
-                        sentOn : newChat.sentOn
-                    }
-                };
-                socket.emit("message_sent" , socketData);
-                setInput("");
-            }
-            else{
-                throw new Error(data2.message);
-            }
-        })
-        .catch(err=>{
-            console.log("Error occ :",err.message);
-            alert(err.message);
-        })
+            };
+            socket.emit("message_sent" , socketData);
+            setInput("");
+        } catch (err){
+            alert("error aagya vancho!!!!")
+        }
     }
    
     useEffect(()=>{
@@ -147,7 +136,7 @@ function ChatWindow() {
             <div className='p-2 w-[40px] bg-white/5 flex items-center justify-center text-white h-[40px] rounded-sm'>
                 <BsEmojiLaughing/>
             </div>
-            <input className='w-[85%] bg-white/10 h-[40px] w-[40px] focus:outline-none rounded-lg text-white/50 px-3 py-1' placeholder='Enter a message..' value={input} onChange={changeHandler} />
+            <input className='bg-white/10 h-[40px] w-[40px] focus:outline-none rounded-lg text-white/50 px-3 py-1' placeholder='Enter a message..' value={input} onChange={changeHandler} />
             <div className='p-2 bg-white/5 flex items-center justify-center text-white h-[40px] w-[40px] rounded-sm'>
                 <IoLinkOutline/>
             </div>
