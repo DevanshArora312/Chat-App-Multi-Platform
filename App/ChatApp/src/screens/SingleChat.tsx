@@ -6,7 +6,7 @@ import Icon2 from "react-native-vector-icons/Entypo"
 import Icon3 from "react-native-vector-icons/Ionicons"
 import { SingleChatStyles } from '../../utils/Styles'
 import MessageBox from '../components/MessageBox'
-import {url} from "../../utils/store"
+import {url,token} from "../../utils/store"
 import { useDispatch,useSelector } from '../redux/store';
 import { loadChat, pushChat } from '../redux/slices/chat'
 import { setUnread, updateLastMsg } from '../redux/slices/list'
@@ -34,7 +34,7 @@ type chatType = {
 
 const SingleChat = ({navigation} : {navigation : any}) : JSX.Element => {
     const dispatch = useDispatch();
-    const token = useSelector((state :any) => {return state.auth.token})
+    // const token = useSelector((state :any) => {return state.auth.token})
     const [isLoading,setLoading] = useState(true);
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
     const activeChat = useSelector((state : any) => {return state.active.active});
@@ -44,6 +44,7 @@ const SingleChat = ({navigation} : {navigation : any}) : JSX.Element => {
 
     useEffect(()=>{
         if(socket){
+            // console.log("sock34",socket)
             socket.on("new_message",async (socketData : any) => {
                 console.log("page socket")
                 dispatch(updateLastMsg(socketData.lastMess));
@@ -55,17 +56,20 @@ const SingleChat = ({navigation} : {navigation : any}) : JSX.Element => {
                     dispatch(pushChat(socketData.newChat));
                 }   
             });
+        } 
+        return () => {
+            socket.off("new_message")
         }
-        
     },[socket])
   
     useEffect(()=>{
-        fetch(`${url}api/chat/get-chat/${activeChat}`,{method:"POST",headers:{"Content-Type" : "application/json"},body:JSON.stringify({token})})
+        // console.log(token)
+        fetch(`${url}api/chat/get-chat/${activeChat}`,{method:"POST",headers:{"Content-Type" : "application/json"},body:JSON.stringify({token : token})})
         .then(res => {
             return res.json();
         })
         .then(dataGot => {
-            // console.log(dataGot)
+            // console.log("datagot",dataGot)
             if(dataGot.chats.messages && dataGot.chats.messages.length !== 0) dataGot.chats.messages = dataGot.chats.messages.reverse();
             console.log("boii")
             dispatch(loadChat(dataGot.chats));
@@ -97,6 +101,7 @@ const SingleChat = ({navigation} : {navigation : any}) : JSX.Element => {
         keyboardDidShowListener.remove();
         };
     }, [isKeyboardVisible]);
+
     const submitHandler = (e : any)=>{
         e.preventDefault()
         if(input.trim() == "") return;
@@ -107,47 +112,38 @@ const SingleChat = ({navigation} : {navigation : any}) : JSX.Element => {
             sentOn:Date.now(),
             id : activeChat
         }
-        fetch(`${url}api/chat/add-message`,{method:"POST",headers:{"Content-Type" : "application/json"},body:JSON.stringify(ob)})
-        .then(res => {
-            return res.json();
-        })
-        .then(data2 => {
-            if(data2.success){
-                const newChat = {
-                    content : ob.content,
-                    type : ob.type,
-                    sentOn : ob.sentOn,
-                    sentBy : chat.reqUserId,
-                    read : false
-                }
-                const userTemp = chat.reqUserId !== chat.user2 ? chat.user2 : chat.user1;
-                dispatch(pushChat(newChat));
-                dispatch(updateLastMsg({read : false,type : "text",message :  newChat.content,id : activeChat,messName : "You",sentOn :newChat.sentOn}));
+        const newChat = {
+            content : ob.content,
+            type : ob.type,
+            sentOn : ob.sentOn,
+            sentBy : chat.reqUserId,
+            read : false
+        }
+        const userTemp = chat.reqUserId !== chat.user2 ? chat.user2 : chat.user1;
+        dispatch(pushChat(newChat));
+        dispatch(updateLastMsg({read : false,type : "text",message :  newChat.content,id : activeChat,messName : "You",sentOn :newChat.sentOn}));
 
-                console.log("hue", {read : false,type : "text",message :  newChat.content,id : activeChat,messName : "You",sentOn :newChat.sentOn})
-                const socketData = {
-                    newChat,
-                    user2 : userTemp,
-                    chatId : activeChat,
-                    newLastMess : {
-                        read : false,
-                        type : "text",
-                        message : newChat.content,
-                        id : activeChat,
-                        messName : chat.lastMessName,
-                        sentOn : newChat.sentOn
-                    }
-                };
-                socket.emit("message_sent" , socketData);
-                setInput("");
+        const socketData = {
+            newChat,
+            user2 : userTemp,
+            chatId : activeChat,
+            newLastMess : {
+                read : false,
+                type : "text",
+                message : newChat.content,
+                id : activeChat,
+                messName : chat.lastMessName,
+                sentOn : newChat.sentOn
             }
-            else{
-                throw new Error(data2.message);
-            }
-        })
-        .catch(err=>{
-            console.log("Error occ :",err.message);
-        })
+        };
+        try{
+            socket.emit("message_sent" , socketData);
+            console.log("yaha agya")
+        } catch(err : any){
+            console.log("spcket err:",err.message)
+        }
+        console.log("hue", {read : false,type : "text",message :  newChat.content,id : activeChat,messName : "You",sentOn :newChat.sentOn})
+        setInput("");
     }
    
     

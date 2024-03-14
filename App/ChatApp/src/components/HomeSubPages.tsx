@@ -15,7 +15,7 @@ import { socket,connectSocket } from '../../utils/socket'
 
 const HomeSubPages = ({contains} : {contains : String}) => {
     const activeChat = useSelector((state : any) => {return state.active.active});
-    const token = useSelector((state : any)=> {return state.auth.token})
+    // const token = useSelector((state : any)=> {return state.auth.token})
     const [req,setReq] = useState(null);
     
     const dispatch = useDispatch();
@@ -28,7 +28,6 @@ const HomeSubPages = ({contains} : {contains : String}) => {
         console.log("bruh");
         fetch(`${url}api/chat/get-chats`,{method:"POST",headers:{"Content-Type" : "application/json"},body:JSON.stringify({token})})
         .then(res => {
-            
             return res.json();
         })
         .then(data => {
@@ -43,31 +42,44 @@ const HomeSubPages = ({contains} : {contains : String}) => {
                     return obj.user.name.toLowerCase().includes(contains.toLowerCase());
                 })
             }
-            // console.log(result)
+            // console.log("res:",result)
             dispatch(setChatList(result));
             setLoading(false);
         })
         .catch(err=>{
-            console.log("Error occ :",err.message);
-            console.error(err);
+            console.log("Error occ here :",err.message);
+            // console.error(err);
             setLoading(true)
         })
-    },[contains])
+    },[])
     useEffect(()=>{
-        if(socket){
-            socket.on("new_message",async (socketData : any) => {
-                console.log("page socket")
-                dispatch(updateLastMsg(socketData.lastMess));
-                if (!activeChat || (activeChat.toString() !== socketData.id.toString())){
-                    dispatch(setUnread({id : socketData.id,value : true}));
-                }else{
-                    console.log("internal case 2" , (activeChat.toString() !== socketData.id.toString()))
-                    dispatch(setUnread({id : socketData.id,value : false}));
-                    dispatch(pushChat(socketData.newChat));
-                }   
-            });
-        }    
-    },[socket])
+        var filtered_chats = data;
+        if(contains !== ""){
+            // console.log("Cont:",contains);
+            filtered_chats = data.chats.filter((obj : any)=>{
+                return obj.user.name.toLowerCase().includes(contains.toLowerCase());
+            })
+        }
+        // console.log(result)
+        dispatch(setChatList(filtered_chats));
+        setLoading(false);
+    },[contains]);
+    
+    // useEffect(()=>{
+    //     if(socket){
+    //         socket.on("new_message",async (socketData : any) => {
+    //             console.log("page socket")
+    //             dispatch(updateLastMsg(socketData.lastMess));
+    //             if (!activeChat || (activeChat.toString() !== socketData.id.toString())){
+    //                 dispatch(setUnread({id : socketData.id,value : true}));
+    //             }else{
+    //                 console.log("internal case 2" , (activeChat.toString() !== socketData.id.toString()))
+    //                 dispatch(setUnread({id : socketData.id,value : false}));
+    //                 dispatch(pushChat(socketData.newChat));
+    //             }   
+    //         });
+    //     }    
+    // },[socket])
   
     useEffect(()=>{
         fetch(`${url}api/user/isLoggedIn`,{method:"POST",headers:{"Content-Type" : "application/json"},body:JSON.stringify({token})})
@@ -82,24 +94,21 @@ const HomeSubPages = ({contains} : {contains : String}) => {
                     socket.on("new_message",async (socketData : any) => {
                         console.log("page socket")
                         dispatch(updateLastMsg(socketData.lastMess));
-                        if (!activeChat || (activeChat.toString() !== socketData.id.toString())){
-                            dispatch(setUnread({id : socketData.id,value : true}));
-                        }else{
-                            console.log("internal case 2" , (activeChat.toString() !== socketData.id.toString()))
-                            dispatch(setUnread({id : socketData.id,value : false}));
-                            dispatch(pushChat(socketData.newChat));
-                        }   
+                        dispatch(setUnread({id : socketData.id,value : true}));
                     });
                 }
             }
             else{
-                navigation.navigate("/login");
+                // navigation.navigate("Login");
             }
         })
         .catch(err=>{
             console.log("Error occ :",err.message); 
         })
-    },[])
+        return () => {
+            socket.off("new_message")
+        }
+    },[activeChat])
       
   return (
     <View style={styles.container}>
