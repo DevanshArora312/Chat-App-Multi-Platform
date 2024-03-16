@@ -6,11 +6,12 @@ import Icon2 from "react-native-vector-icons/Entypo"
 import Icon3 from "react-native-vector-icons/Ionicons"
 import { SingleChatStyles } from '../../utils/Styles'
 import MessageBox from '../components/MessageBox'
-import {url,token} from "../../utils/store"
+import {url} from "../../utils/store"
 import { useDispatch,useSelector } from '../redux/store';
 import { loadChat, pushChat } from '../redux/slices/chat'
 import { setUnread, updateLastMsg } from '../redux/slices/list'
 import { socket } from '../../utils/socket'
+import { setActive } from '../redux/slices/active'
 type messageType = {
     _id : String,
     content : String,
@@ -34,7 +35,7 @@ type chatType = {
 
 const SingleChat = ({navigation} : {navigation : any}) : JSX.Element => {
     const dispatch = useDispatch();
-    // const token = useSelector((state :any) => {return state.auth.token})
+    const token = useSelector((state :any) => {return state.auth.token})
     const [isLoading,setLoading] = useState(true);
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
     const activeChat = useSelector((state : any) => {return state.active.active});
@@ -58,7 +59,10 @@ const SingleChat = ({navigation} : {navigation : any}) : JSX.Element => {
             });
         } 
         return () => {
-            socket.off("new_message")
+            if(socket){
+                socket.off("new_message")
+                // socket.emit("end")
+            }
         }
     },[socket])
   
@@ -156,7 +160,7 @@ const SingleChat = ({navigation} : {navigation : any}) : JSX.Element => {
         {chat && <ImageBackground source={bgImg} resizeMode="cover" style={styles.bg}>
             <View style={styles.headContainer} >
                 <View style={styles.cont1}>
-                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <TouchableOpacity onPress={() => {navigation.goBack();dispatch(setActive(null))}}>
                         <Icon name={"arrowleft"} color={"white"} size={27}/>
                     </TouchableOpacity>
                     <Image source={(chat && chat.user && chat.dp) ? chat.dp : pfp} style={styles.img}/>

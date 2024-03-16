@@ -5,7 +5,7 @@ import EmptyChat from './EmptyChat'
 import SingleChatBox from './SingleChatBox'
 import {navContext} from "../../utils/store"
 import { HomeSubStyles } from '../../utils/Styles'
-import {token,url} from "../../utils/store"
+import {url} from "../../utils/store"
 import { useDispatch,useSelector } from '../redux/store'
 import { setActive } from '../redux/slices/active'
 import { setChatList, setUnread, updateLastMsg } from '../redux/slices/list'
@@ -15,7 +15,7 @@ import { socket,connectSocket } from '../../utils/socket'
 
 const HomeSubPages = ({contains} : {contains : String}) => {
     const activeChat = useSelector((state : any) => {return state.active.active});
-    // const token = useSelector((state : any)=> {return state.auth.token})
+    const token = useSelector((state : any)=> {return state.auth.token})
     const [req,setReq] = useState(null);
     
     const dispatch = useDispatch();
@@ -51,18 +51,6 @@ const HomeSubPages = ({contains} : {contains : String}) => {
             // console.error(err);
             setLoading(true)
         })
-    },[])
-    useEffect(()=>{
-        var filtered_chats = data;
-        if(contains !== ""){
-            // console.log("Cont:",contains);
-            filtered_chats = data.chats.filter((obj : any)=>{
-                return obj.user.name.toLowerCase().includes(contains.toLowerCase());
-            })
-        }
-        // console.log(result)
-        dispatch(setChatList(filtered_chats));
-        setLoading(false);
     },[contains]);
     
     // useEffect(()=>{
@@ -99,14 +87,17 @@ const HomeSubPages = ({contains} : {contains : String}) => {
                 }
             }
             else{
-                // navigation.navigate("Login");
+                navigation.navigate("Login");
             }
         })
         .catch(err=>{
             console.log("Error occ :",err.message); 
         })
         return () => {
-            socket.off("new_message")
+            if(socket){
+                socket.off("new_message");
+                socket.emit("end")
+            }
         }
     },[activeChat])
       

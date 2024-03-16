@@ -3,6 +3,7 @@ import React from 'react'
 import Icon from "react-native-vector-icons/Ionicons"
 import {pfp} from "../../utils/images"
 import {singleChatBoxStyles} from "../../utils/Styles"
+import { getTime } from '../../utils/store'
 type chatItem = {
     image : ImageSourcePropType,
     name : String,
@@ -26,7 +27,7 @@ const SingleChatBox = ({props} : {props : chatItem}) => {
                     {props.name ? props.name : "Username"}
                 </Text>
                 <Text style={styles.message}>
-                    {props.time}
+                    {props.time ? getTime(props.time) : ""}
                 </Text>
             </View>
             <View style={styles.messageBox}>
@@ -34,7 +35,7 @@ const SingleChatBox = ({props} : {props : chatItem}) => {
                     (props.tick !== null) && (!props.tick ? <Icon name={"checkmark"} size ={20} color={isDarkMode ? "white" : "grey"} /> : <Icon name={"checkmark-done"} size ={20} color={"blue"} />)
                 }
                 <Text style={styles.message}>
-                    {props.messName ? props.messName+" : " : null }
+                    {props.messName ? props.messName+" :" : null }
                 </Text>
                 <Text style={styles.message}>
                     {props.lastMess}

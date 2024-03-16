@@ -7,9 +7,12 @@ import { navContext, url } from '../../utils/store';
 import { stylesHeaderFunc } from '../../utils/Styles';
 import AddChat from '../components/AddChat'
 import { SearchBar } from 'react-native-screens'
-
+import { setToken } from '../redux/slices/auth'
+import { useDispatch,useSelector } from "react-redux"
 
 const Home = ({navigation} : {navigation : any}) => {
+    const dispatch = useDispatch();
+    const token = useSelector((state : any) => state.auth.token);
     const {width} = Dimensions.get('window');
     const isDarkMode = useColorScheme() === "dark";
     const stylesHeader = stylesHeaderFunc(isDarkMode);
@@ -23,6 +26,12 @@ const Home = ({navigation} : {navigation : any}) => {
       setSText("");
     },[search]);
     
+    const logout = () => {
+      dispatch(setToken(null));
+      console.log(token)
+      // navigation.popToTop();
+      navigation.replace("Login")
+    }
     
   return (
     <navContext.Provider value={navigation}>
@@ -37,7 +46,7 @@ const Home = ({navigation} : {navigation : any}) => {
                         <TouchableOpacity onPress={()=>setSearch(!search)}>
                           <Icon name ={"search"} size={25} color={"white"} style={{paddingBottom:0}} />
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={logout}>
                           <Icon2 name={"logout"} size={25} color={"white"} />
                         </TouchableOpacity>
                     </View>

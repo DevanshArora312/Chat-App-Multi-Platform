@@ -27,9 +27,6 @@ app.use(fileUpload());
 app.use("/api/user",userRoutes);
 app.use("/api/chat",chatRoutes);
 
-app.get("/",(req,res) => {
-    res.send("works");
-})
 
 
 dbConnect();
@@ -38,7 +35,7 @@ io.on("connection",async socket => {
     const userId = socket.handshake.query['user_id'];
     const socketId = socket.id;
     const u = await userModel.findById(userId);
-    console.log(`Socket on with id : ${socketId} with user id : ${userId} and name : ${u.name}`);
+    console.log(`Socket on with id : ${socketId} with user id : ${userId} and name : ${u?.name}`);
     if (Boolean(userId)){
         await userModel.findByIdAndUpdate(userId, {status : "online",socket_id : socketId});
     }
@@ -56,13 +53,16 @@ io.on("connection",async socket => {
                 // io.to(Id2).emit("status_update",)
             }   
     
-            console.log("Closing connection!",u.name);
+            console.log("Closing connection!",u?.name,"and",socket?.id);
             socket.disconnect(0);
         });
     }
     
 });
 
+app.get("/",(req,res) => {
+    res.send("works");
+})
 server.listen(process.env.PORT, () => {
     console.log("Server started at port",process.env.PORT);
 })
