@@ -1,9 +1,10 @@
 import { io } from "socket.io-client";
+import { url } from "./store";
 
 let socket : any;
 
 const connectSocket = (user_id : any) =>{
-    socket= io("ws://192.168.29.165:3002", {
+    socket= io(url, {
         query : {user_id},
     });
     

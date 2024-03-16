@@ -6,7 +6,7 @@ import {useDispatch,useSelector} from "react-redux";
 import { setToken } from '../redux/slices/auth';
 
 const Signup = ({navigation} : {navigation : any}) => {
-  const [formData,setFormData] = useState({email : "" , password : "",cpassword:""});
+  const [formData,setFormData] = useState({email : "" , password : "",name:""});
   const [isClicked,setisClicked] = useState(false);
   const token = useSelector((state : any) => state.auth.token);
   // console.log(formData)
@@ -20,10 +20,9 @@ const Signup = ({navigation} : {navigation : any}) => {
     })
   }
   const handleSubmit = () => {
-      if (formData['email'] == '' || formData['password'] == '') {
+      if (formData['email'] == '' || formData['password'] == '' || formData['name'] == '') {
 
       } 
-      if(formData['password'] !== formData['cpassword']) return;
       setisClicked(true);
       fetch(`${url}api/user/signup`,{method:"POST",headers:{"Content-Type" : "application/json"},body:JSON.stringify(formData)})
       .then(res => (res.json()))
@@ -70,9 +69,9 @@ const Signup = ({navigation} : {navigation : any}) => {
         </View>
       </View>
       <View style={styles.form}>
+        <TextInput style={styles.inputField} placeholder='Username' placeholderTextColor={"black"} onChangeText={text => handleChange("name",text)} value={formData.name} />
         <TextInput style={styles.inputField} placeholder='Email' placeholderTextColor={"black"} onChangeText={text => handleChange("email",text)} value={formData.email} />
         <TextInput style={styles.inputField} placeholder='Password' placeholderTextColor={"black"} onChangeText={text => handleChange("password",text)} value={formData.password} />
-        <TextInput style={styles.inputField} placeholder='Confirm Password' placeholderTextColor={"black"} onChangeText={text => handleChange("cpassword",text)} value={formData.cpassword} />
         <TouchableOpacity style={styles.formButton} onPress={handleSubmit} disabled={isClicked}> 
           <Text style={{fontSize :20}}>Sign-Up</Text>
         </TouchableOpacity>

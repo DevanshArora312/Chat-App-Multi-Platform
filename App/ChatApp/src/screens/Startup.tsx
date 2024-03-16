@@ -1,16 +1,20 @@
 import { View, Text,SafeAreaView,StyleSheet,Image,useColorScheme} from 'react-native'
 import React,{useEffect} from 'react'
-import { url,token } from '../../utils/store'
+import { url } from '../../utils/store'
 import { icon,icon_light } from '../../utils/images'
+import { useDispatch,useSelector } from '../redux/store';
 
 const Startup = ({navigation} : {navigation : any}) => {
-    const isDarkMode = useColorScheme() === "dark"
+    const isDarkMode = useColorScheme() === "dark";
+    const token = useSelector((state :any) => {return state.auth.token})
     useEffect(()=>{
-        fetch(`${url}api/user/isLoggedIn`,{method:"POST",headers:{"Content-Type" : "application/json"},body:JSON.stringify({token})})
+        console.log(token,url)
+        fetch(`${url}api/user/isLoggedIn`,{method:"POST",headers:{"Content-Type" : "application/json"},body:JSON.stringify(token)})
         .then(res => {
             return res.json();
         })
         .then(data => {
+            console.log(data)
             if (data.success){
               navigation.replace("Home");
             } else {
@@ -18,7 +22,7 @@ const Startup = ({navigation} : {navigation : any}) => {
             }
         })
         .catch(err=>{
-            console.log("Error occ :",err.message); 
+            console.log("Error occ here:",err.message); 
         })
     },[]);
   return (

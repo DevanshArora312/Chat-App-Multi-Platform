@@ -1,13 +1,14 @@
 import { createContext } from "react";
+import {BASE_URL} from "@env"
 
 export const navContext = createContext(); 
-export const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFiY0A2OS5jb20iLCJpZCI6IjY1ZjE1Njc4OTE0ZWJjYTExNDE1ZDIxYiIsImlhdCI6MTcxMDQ0MDkzMywiZXhwIjoxNzEwNzAwMTMzfQ.mi_7g04LsVAwL_h3KnLemrHL80cgPTS1KuLscTjrJmc"
-export const chatListCont = createContext();
-const clg = "10.100.39.255";
-const flat = "192.168.1.12";
-const ghar = "192.168.29.165";
-export const url = `http://${ghar}:3002/`
+// const clg = "10.100.39.255";
+// const flat = "192.168.1.12";
+// const ghar = "192.168.29.165";
+// export const url = `http://${ghar}:3002/`
 
+export const url = BASE_URL
+// console.log(url)
 export const getTime = (timestamp) => {
     const months = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"]
     var timeStr =""; 
