@@ -6,17 +6,17 @@ export const stylesHeaderFunc = (isDarkMode) =>  {
             safeContainer : {
                 width:"100%",
                 flex :1,
-                height :"20%",
                 position:'absolute',
                 top:0,
                 left:0,
-                height:"auto"
+                height:"15%"
             },
             headContainer : {
                 width : "100%", 
                 flex : 1,
                 backgroundColor : isDarkMode ? "rgb(38,55,66)" : "rgb(7,94,85)",
-                height : 200
+                height : "15%",
+                position:"relative"
         
             },
             titleContainer : {
@@ -26,6 +26,9 @@ export const stylesHeaderFunc = (isDarkMode) =>  {
                 justifyContent : 'space-between',
                 alignItems:"center",
                 padding : 10,
+                position:"absolute",
+                top:0,
+                left:0
                 
             },
             headText : {
@@ -37,8 +40,9 @@ export const stylesHeaderFunc = (isDarkMode) =>  {
                 display : 'flex',
                 flexDirection : "row",
                 justifyContent : 'space-between',
-                paddingVertical : 10,
-                paddingTop : 20,
+                position:"absolute",
+                left:0,
+                bottom : "1%"
             },
             iconBox : {
                 width : "25%",
@@ -51,7 +55,7 @@ export const stylesHeaderFunc = (isDarkMode) =>  {
                 flex : 1,
                 justifyContent : "center",
                 alignItems :"center",
-                height:"57%",
+                // height:40,
             },
             textCont : {
                 width :"auto",

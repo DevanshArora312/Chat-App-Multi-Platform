@@ -27,9 +27,6 @@ app.use(fileUpload());
 app.use("/api/user",userRoutes);
 app.use("/api/chat",chatRoutes);
 
-app.get("/",(req,res) => {
-    res.send("works");
-})
 
 
 dbConnect();
@@ -56,13 +53,16 @@ io.on("connection",async socket => {
                 // io.to(Id2).emit("status_update",)
             }   
     
-            console.log("Closing connection!",u.name);
+            console.log("Closing connection!",u.name,"and",socket.id);
             socket.disconnect(0);
         });
     }
     
 });
 
+app.get("/",(req,res) => {
+    res.send("works");
+})
 server.listen(process.env.PORT, () => {
     console.log("Server started at port",process.env.PORT);
 })

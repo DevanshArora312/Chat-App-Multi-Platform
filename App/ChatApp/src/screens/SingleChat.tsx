@@ -11,6 +11,7 @@ import { useDispatch,useSelector } from '../redux/store';
 import { loadChat, pushChat } from '../redux/slices/chat'
 import { setUnread, updateLastMsg } from '../redux/slices/list'
 import { socket } from '../../utils/socket'
+import { setActive } from '../redux/slices/active'
 type messageType = {
     _id : String,
     content : String,
@@ -58,7 +59,10 @@ const SingleChat = ({navigation} : {navigation : any}) : JSX.Element => {
             });
         } 
         return () => {
-            socket.off("new_message")
+            if(socket){
+                socket.off("new_message")
+                // socket.emit("end")
+            }
         }
     },[socket])
   
@@ -156,7 +160,7 @@ const SingleChat = ({navigation} : {navigation : any}) : JSX.Element => {
         {chat && <ImageBackground source={bgImg} resizeMode="cover" style={styles.bg}>
             <View style={styles.headContainer} >
                 <View style={styles.cont1}>
-                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <TouchableOpacity onPress={() => {navigation.goBack();dispatch(setActive(null))}}>
                         <Icon name={"arrowleft"} color={"white"} size={27}/>
                     </TouchableOpacity>
                     <Image source={(chat && chat.user && chat.dp) ? chat.dp : pfp} style={styles.img}/>

@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Image, ImageSourcePropType, useColorScheme } fr
 import React from 'react'
 import Icon from "react-native-vector-icons/Ionicons"
 import { MessageStyles } from '../../utils/Styles';
+import { getTime } from '../../utils/store';
 
 type propType = {
     content : String,
@@ -29,7 +30,7 @@ const MessageBox = ({props} : {props : propType}) => {
             {
                 !props.read ? <Icon name={"checkmark"} size ={18} color={isDarkMode ? "white" : "grey"} /> : <Icon name={"checkmark-done"} size ={18} color={"blue"} />
             }
-            <Text style={{color :"grey",fontSize:13}}>{props.sentOn}</Text>
+            <Text style={{color :"grey",fontSize:13}}>{getTime(props.sentOn)}</Text>
         </View>
       </View>
     </View>

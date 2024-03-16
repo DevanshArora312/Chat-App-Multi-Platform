@@ -9,12 +9,17 @@ import Signup from './screens/Signup';
 const Stack = createNativeStackNavigator();
 import {store} from "./redux/store.js";
 import {Provider as ReduxProvider} from 'react-redux';
+import Startup from './screens/Startup.tsx';
 
 export default function Index() : JSX.Element {
   return (
     <ReduxProvider store={store}>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen
+        name="Startup"
+        component={Startup}
+      />
       <Stack.Screen
         name="Home"
         component={Home}
