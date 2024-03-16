@@ -275,7 +275,9 @@ export const AddChatStyles = (isDarkMode) =>  {
                 backgroundColor : "transparent",
                 width : "100%",
                 alignItems : "center",
-                marginVertical : 10
+                marginVertical : 10,
+                justifyContent :"center",
+                flexDirection : "row"
             },
             input:{
                 backgroundColor : "transparent",

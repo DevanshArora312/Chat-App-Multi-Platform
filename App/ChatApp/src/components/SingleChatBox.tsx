@@ -27,7 +27,7 @@ const SingleChatBox = ({props} : {props : chatItem}) => {
                     {props.name ? props.name : "Username"}
                 </Text>
                 <Text style={styles.message}>
-                    {getTime(props.time)}
+                    {props.time ? getTime(props.time) : ""}
                 </Text>
             </View>
             <View style={styles.messageBox}>

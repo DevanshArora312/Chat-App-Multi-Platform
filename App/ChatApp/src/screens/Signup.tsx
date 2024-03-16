@@ -70,9 +70,9 @@ const Signup = ({navigation} : {navigation : any}) => {
         </View>
       </View>
       <View style={styles.form}>
-        <TextInput style={styles.inputField} placeholder='Email' placeholderTextColor={"black"} onChangeText={text => handleChange("email",text)} />
-        <TextInput style={styles.inputField} placeholder='Password' placeholderTextColor={"black"} onChangeText={text => handleChange("password",text)} />
-        <TextInput style={styles.inputField} placeholder='Confirm Password' placeholderTextColor={"black"} onChangeText={text => handleChange("cpassword",text)} />
+        <TextInput style={styles.inputField} placeholder='Email' placeholderTextColor={"black"} onChangeText={text => handleChange("email",text)} value={formData.email} />
+        <TextInput style={styles.inputField} placeholder='Password' placeholderTextColor={"black"} onChangeText={text => handleChange("password",text)} value={formData.password} />
+        <TextInput style={styles.inputField} placeholder='Confirm Password' placeholderTextColor={"black"} onChangeText={text => handleChange("cpassword",text)} value={formData.cpassword} />
         <TouchableOpacity style={styles.formButton} onPress={handleSubmit} disabled={isClicked}> 
           <Text style={{fontSize :20}}>Sign-Up</Text>
         </TouchableOpacity>

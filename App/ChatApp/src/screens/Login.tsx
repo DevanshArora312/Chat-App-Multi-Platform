@@ -70,8 +70,8 @@ const Login = ({navigation} : {navigation : any}) => {
         </View>
       </View>
       <View style={styles.form}>
-        <TextInput style={styles.inputField} placeholder='Email' placeholderTextColor={"black"} onChangeText={text => handleChange("email",text)}  />
-        <TextInput style={styles.inputField} placeholder='Password' placeholderTextColor={"black"} onChangeText={text => handleChange("password",text)} />
+        <TextInput style={styles.inputField} placeholder='Email' placeholderTextColor={"black"} onChangeText={text => handleChange("email",text)} value={formData.email} />
+        <TextInput style={styles.inputField} placeholder='Password' placeholderTextColor={"black"} onChangeText={text => handleChange("password",text)} value={formData.password} />
         <TouchableOpacity style={styles.formButton} onPress={handleSubmit} disabled={isClicked}> 
           <Text style={{fontSize :20}}>Login</Text>
         </TouchableOpacity>
