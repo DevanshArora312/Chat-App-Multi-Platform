@@ -78,7 +78,7 @@ function ChatWindow() {
             setLoading(false);
         })
         .catch(err=>{
-            window.alert("Error occ window file:",err.message);
+            // window.alert("Error occ window file:",err.message);
             console.error(err);
             setLoading(true)
         })  

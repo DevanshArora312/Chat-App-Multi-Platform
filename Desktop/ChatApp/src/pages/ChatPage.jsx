@@ -52,7 +52,7 @@ const ChatPage = () => {
         })
         .catch(err=>{
             console.log("Error occ :",err.message);
-            alert("yeh wala",err.message)
+            // alert("yeh wala",err.message)
         })
         return() =>{
             socket.off("new_message")

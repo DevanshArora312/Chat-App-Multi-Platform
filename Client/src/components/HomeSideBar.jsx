@@ -35,7 +35,7 @@ const HomeSideBar = ({props}) => {
         })
         .catch(err=>{
             console.log("Error occ :",err.message);
-            alert(err.message)
+            // alert(err.message)
         })
     },[]);
     const logout = () => {

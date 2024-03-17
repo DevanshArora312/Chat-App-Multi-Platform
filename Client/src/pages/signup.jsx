@@ -52,7 +52,7 @@ const SignupPage = () => {
         })
         .catch(error => {
             const err = error.response.data;
-            window.alert(err.message);
+            // window.alert(err.message);
             setisClicked(false);
         })
     }

@@ -5,9 +5,10 @@ import {GiHamburgerMenu} from "react-icons/gi"
 import SideBar from "../components/SideBar"
 import { useState } from "react";
 import FeaturesBar from "../components/fBar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const BetterNavBar = () => {
+    const navigate = useNavigate();
     const [openSide,setOpenSide] = useState(false);
     const [openFeatures,setOpenFeatures] = useState(false);
     const sideBarOperation = () => {
@@ -49,7 +50,7 @@ const BetterNavBar = () => {
                     <button className={buttonStyle}>Android</button>
                 </div>
                 <div className="flex justify-around items-center max-lg:hidden">
-                    <button className="focus:outline-none bg-transparent flex items-end border-b-2 border-transparent hover:border-blue-500 duration-700 ease">Sign Up</button>
+                    <button className="focus:outline-none bg-transparent flex items-end border-b-2 border-transparent hover:border-blue-500 duration-700 ease" onClick={()=> navigate("/signup")}>Sign Up</button>
                     <Link to="/home" className='ml-5 border-black border rounded-[50px] bg-blue-700 px-5 py-3 text-black focus:outline-none flex items-end'>
                         Explore Now <AiOutlineSearch className='mb-[5px] ml-2'/>
                     </Link>

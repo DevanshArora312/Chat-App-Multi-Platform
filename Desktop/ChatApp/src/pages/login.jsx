@@ -59,7 +59,7 @@ const LoginPage = () => {
         })
         .catch(err => {
             console.error(err);
-            window.alert(err.message);
+            // window.alert(err.message);
             setisClicked(false);
         })
     }

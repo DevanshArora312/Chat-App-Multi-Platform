@@ -75,7 +75,7 @@ const Login = ({navigation} : {navigation : any}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.changeScreen}>
-        <Text style={{fontSize : 20}}>
+        <Text style={{fontSize : 20,color:"white"}}>
           Don't have an Account?
         </Text>
         <TouchableOpacity onPress={() => navigation.replace("Signup")} disabled={isClicked}>
