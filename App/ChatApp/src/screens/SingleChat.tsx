@@ -183,7 +183,7 @@ const SingleChat = ({navigation} : {navigation : any}) : JSX.Element => {
                                 img : item.img
                             }
                             return (
-                                <MessageBox props={prop} key={item._id.toString()}/>
+                                <MessageBox props={prop} key={item ? item._id.toString() : item.sentOn.toString()+item?.content}/>
                             )
                         }}
                         keyExtractor={item => item._id}
