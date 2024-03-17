@@ -12,7 +12,6 @@ import Chats from '../components/chats';
 
 const LandingPage = () => {
     window.onbeforeunload = () => {
-        console.log("run");
         window.scrollTo({
             top: 0,
             left: 0,

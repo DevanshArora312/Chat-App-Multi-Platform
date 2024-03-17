@@ -1,6 +1,6 @@
 import Sidebar from "../components/SideBar";
 const sideBarView = () =>{
-    console.log(document.getElementById('sideBar').style.width);
+    // console.log(document.getElementById('sideBar').style.width);
     if (document.getElementById('sideBar').style.width === "0px"){
 
         document.getElementById("sideBar").style.width = "250px";

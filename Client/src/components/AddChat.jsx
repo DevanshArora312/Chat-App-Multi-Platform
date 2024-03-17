@@ -34,8 +34,7 @@ function AddChat({setAdd}) {
             return res.json();
         })
         .then(data => {
-            console.log(data);
-            // setResult(data);
+            
             dispatch(addChat(data.chat))
         })
         .catch(err=>{

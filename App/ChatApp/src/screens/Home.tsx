@@ -6,7 +6,6 @@ import HomeSubPages from '../components/HomeSubPages'
 import { navContext, url } from '../../utils/store';
 import { stylesHeaderFunc } from '../../utils/Styles';
 import AddChat from '../components/AddChat'
-import { SearchBar } from 'react-native-screens'
 import { setToken } from '../redux/slices/auth'
 import { useDispatch,useSelector } from "react-redux"
 

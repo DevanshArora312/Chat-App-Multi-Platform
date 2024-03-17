@@ -17,7 +17,6 @@ const slice = createSlice({
         updateLastMsg : (state,action) => {
             state.list.map((item,index)=>{
                 if (item._id.toString() === action.payload.id.toString()){
-                    console.log(action.payload.sentOn);
                     if (action.payload.type === "image") item.lastMess = "Image";
                     else item.lastMess = action.payload.message;
                     item.read = action.payload.read;
@@ -32,7 +31,7 @@ const slice = createSlice({
             state.list.forEach((item)=>{
                 if (item._id.toString() === action.payload.id.toString()){
                     item.unread = action.payload.value;
-                    // console.log(action.payload.name,action.payload.value,item.unread)
+                
                 }
             })
         }
