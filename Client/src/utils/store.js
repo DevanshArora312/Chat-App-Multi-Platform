@@ -1,11 +1,8 @@
 import { createContext } from "react";
 export const token = window.localStorage.getItem("token");
 export const chatListCont = createContext();
-// const clg = "10.100.98.70";
-// const flat = "192.168.1.17";
-// const ghar = "192.168.29.165";
-// export const url = `http://localhost:3002/`
-export const url = "https://chat-app-multi-platform.onrender.com/"
+
+export const url = import.meta.env.VITE_REACT_APP_BASE_URL 
 export const getTime = (timestamp) => {
     const months = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"]
     var timeStr =""; 

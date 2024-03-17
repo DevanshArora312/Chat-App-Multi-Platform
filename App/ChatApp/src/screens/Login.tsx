@@ -9,7 +9,6 @@ const Login = ({navigation} : {navigation : any}) => {
   const token = useSelector((state : any) => state.auth.token);
   const [formData,setFormData] = useState({email : "" , password : "" });
   const [isClicked,setisClicked] = useState(false);
-  // console.log(formData)
   const dispatch = useDispatch();
   const handleChange = (field : string ,text : string) => {
     setFormData (prev => {
@@ -29,7 +28,6 @@ const Login = ({navigation} : {navigation : any}) => {
       .then(res => (res.json()))
       .then(resData => {
           if(resData.success){
-              console.log(resData);
               dispatch(setToken(resData.token));
               navigation.replace("Home");
           } else{
@@ -77,7 +75,7 @@ const Login = ({navigation} : {navigation : any}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.changeScreen}>
-        <Text style={{fontSize : 20}}>
+        <Text style={{fontSize : 20,color:"white"}}>
           Don't have an Account?
         </Text>
         <TouchableOpacity onPress={() => navigation.replace("Signup")} disabled={isClicked}>

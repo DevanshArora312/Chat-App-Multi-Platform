@@ -8,13 +8,11 @@ const Startup = ({navigation} : {navigation : any}) => {
     const isDarkMode = useColorScheme() === "dark";
     const token = useSelector((state :any) => {return state.auth.token})
     useEffect(()=>{
-        console.log(token,url)
-        fetch(`${url}api/user/isLoggedIn`,{method:"POST",headers:{"Content-Type" : "application/json"},body:JSON.stringify(token)})
+        fetch(`${url}api/user/isLoggedIn`,{method:"POST",headers:{"Content-Type" : "application/json"},body:JSON.stringify({token})})
         .then(res => {
             return res.json();
         })
         .then(data => {
-            console.log(data)
             if (data.success){
               navigation.replace("Home");
             } else {

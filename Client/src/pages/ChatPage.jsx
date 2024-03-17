@@ -22,24 +22,6 @@ const ChatPage = () => {
     const activeChat = useSelector(state => {return state.active.active});
     const [reqId,setReq] = useState(null);
     
-    // useEffect(()=>{
-    //     if(socket){
-    //         socket.on("new_message",async socketData => {
-    //             console.log("page socket")
-    //             dispatch(updateLastMsg(socketData.lastMess));
-    //             if (!activeChat || (activeChat.toString() !== socketData.id.toString())){
-    //                 dispatch(setUnread({id : socketData.id,value : true}));
-    //             }else{
-    //                 console.log("internal case 2" , (activeChat.toString() !== socketData.id.toString()))
-    //                 dispatch(setUnread({id : socketData.id,value : false}));
-    //                 dispatch(pushChat(socketData.newChat));
-    //             }   
-    //         });
-    //     }
-    //     return() =>{
-    //         socket.off("new_message")
-    //     }
-    // },[socket])
 
     useEffect(()=>{
         fetch(`${url}api/user/isLoggedIn`,{method:"POST",headers:{"Content-Type" : "application/json"},body:JSON.stringify({token})})
@@ -52,14 +34,11 @@ const ChatPage = () => {
                 window.onload = connectSocket(data.reqUserId);
                 if(socket){
                     socket.on("new_message",async socketData => {
-                        // console.log("page socket 123")
                         dispatch(updateLastMsg(socketData.lastMess));
                         const chatId = socketData.id;
-                        // console.log("check here -- chat",chatId , "active" , activeChat);
                         if ( activeChat === null || activeChat !== chatId){
                             dispatch(setUnread({id : socketData.id,value : true}));
                         }else{
-                            // console.log("internal case 2" , (activeChat.toString() !== chatId.toString()))
                             dispatch(setUnread({id : chatId,value : false}));
                             dispatch(pushChat(socketData.newChat));
                         }   
@@ -73,7 +52,7 @@ const ChatPage = () => {
         })
         .catch(err=>{
             console.log("Error occ :",err.message);
-            alert("yeh wala",err.message)
+            // alert("yeh wala",err.message)
         })
         return() =>{
             socket.off("new_message")

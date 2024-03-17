@@ -28,8 +28,7 @@ const LoginPage = () => {
             }
         })
         .catch(err=>{
-            console.log("heh")
-            alert(err.message);
+            // alert(err.message);
         })
     },[token])
 
@@ -46,7 +45,6 @@ const LoginPage = () => {
         .then(res => (res.json()))
         .then(resData => {
             if(resData.success){
-                console.log(resData);
                 window.localStorage.setItem("token",resData.token);
                 dispatch(setToken(resData.token));
                 navigate("/home");
@@ -61,7 +59,7 @@ const LoginPage = () => {
         })
         .catch(err => {
             console.error(err);
-            window.alert(err.message);
+            // window.alert(err.message);
             setisClicked(false);
         })
     }
@@ -74,7 +72,6 @@ const LoginPage = () => {
         })
     }
     
-    console.log(formData);
     return ( 
         <div className='relative w-screen h-screen'>
             <div

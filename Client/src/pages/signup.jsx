@@ -42,7 +42,6 @@ const SignupPage = () => {
                 dispatch(setToken(resData.token));
                 navigate("/home");
             } else{
-                console.log("hueueu3") 
                 setErr(resData.message);
                 setTimeout(()=>{
                     setErr(null);
@@ -52,10 +51,8 @@ const SignupPage = () => {
             }
         })
         .catch(error => {
-            // console.log(error.response);
             const err = error.response.data;
-            // console.error(err);
-            window.alert(err.message);
+            // window.alert(err.message);
             setisClicked(false);
         })
     }
@@ -78,12 +75,9 @@ const SignupPage = () => {
             }
         })
         .catch(err=>{
-            console.log("heh")
             alert(err.message);
         })
     },[])
-    // console.log(fileRef)
-    console.log(formData);
     return ( 
         <div className='relative w-screen h-screen'>
             <div

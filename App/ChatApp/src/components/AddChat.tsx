@@ -57,7 +57,7 @@ const AddChat = () => {
     setUser(null)
   }
   
-    // console.log(user2)
+    
   return (
     <View style={styles.container}>
       <View style={styles.inputCont}>

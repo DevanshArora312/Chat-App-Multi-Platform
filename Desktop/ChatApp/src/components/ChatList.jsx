@@ -36,7 +36,6 @@ function ChatList() {
                     return obj.user.name.toLowerCase().includes(contains.toLowerCase());
                 })
             }
-            // console.log(result)
             dispatch(setChatList(result));
             setLoading(false);
         })
@@ -74,7 +73,7 @@ function ChatList() {
                         unread : item.unread
                     }
                     return(
-                        <button className='btnChat easeInOut duration-500 focus:outline-none ' key={index} onClick={()=>{dispatch(setActive(item._id)); console.log("clicked",item._id,"and", activeChat)}}>
+                        <button className='btnChat easeInOut duration-500 focus:outline-none ' key={index} onClick={()=>{dispatch(setActive(item._id));}}>
                             <SingleChatBox props={dataItem} activeChat={activeChat}/>
                         </button>
                     );

@@ -45,14 +45,11 @@ const SingleChat = ({navigation} : {navigation : any}) : JSX.Element => {
 
     useEffect(()=>{
         if(socket){
-            // console.log("sock34",socket)
             socket.on("new_message",async (socketData : any) => {
-                console.log("page socket")
                 dispatch(updateLastMsg(socketData.lastMess));
                 if (!activeChat || (activeChat.toString() !== socketData.id.toString())){
                     dispatch(setUnread({id : socketData.id,value : true}));
                 }else{
-                    console.log("internal case 2" , (activeChat.toString() !== socketData.id.toString()))
                     dispatch(setUnread({id : socketData.id,value : false}));
                     dispatch(pushChat(socketData.newChat));
                 }   
@@ -67,15 +64,12 @@ const SingleChat = ({navigation} : {navigation : any}) : JSX.Element => {
     },[socket])
   
     useEffect(()=>{
-        // console.log(token)
         fetch(`${url}api/chat/get-chat/${activeChat}`,{method:"POST",headers:{"Content-Type" : "application/json"},body:JSON.stringify({token : token})})
         .then(res => {
             return res.json();
         })
         .then(dataGot => {
-            // console.log("datagot",dataGot)
             if(dataGot.chats.messages && dataGot.chats.messages.length !== 0) dataGot.chats.messages = dataGot.chats.messages.reverse();
-            console.log("boii")
             dispatch(loadChat(dataGot.chats));
             dispatch(setUnread({id:activeChat,value : false}))
             setLoading(false);
@@ -83,7 +77,10 @@ const SingleChat = ({navigation} : {navigation : any}) : JSX.Element => {
         .catch(err=>{
             console.log("yeh",err);
             setLoading(true)
-        })  
+        })
+        return () => {
+            dispatch(loadChat(null))
+        } 
     },[activeChat]);
                 
     useEffect(() => {
@@ -142,11 +139,9 @@ const SingleChat = ({navigation} : {navigation : any}) : JSX.Element => {
         };
         try{
             socket.emit("message_sent" , socketData);
-            console.log("yaha agya")
         } catch(err : any){
             console.log("spcket err:",err.message)
         }
-        console.log("hue", {read : false,type : "text",message :  newChat.content,id : activeChat,messName : "You",sentOn :newChat.sentOn})
         setInput("");
     }
    
@@ -154,13 +149,12 @@ const SingleChat = ({navigation} : {navigation : any}) : JSX.Element => {
     const isDarkMode = useColorScheme() === "dark";
     const bgImg : ImageSourcePropType = isDarkMode ? darkBg : lightBg;
     const styles = SingleChatStyles(isDarkMode,isKeyboardVisible);
-    // console.log(input);
   return (
     <SafeAreaView>
         {chat && <ImageBackground source={bgImg} resizeMode="cover" style={styles.bg}>
             <View style={styles.headContainer} >
                 <View style={styles.cont1}>
-                    <TouchableOpacity onPress={() => {navigation.goBack();dispatch(setActive(null))}}>
+                    <TouchableOpacity onPress={() => {navigation.goBack();dispatch(setActive(null));dispatch(loadChat(null))}}>
                         <Icon name={"arrowleft"} color={"white"} size={27}/>
                     </TouchableOpacity>
                     <Image source={(chat && chat.user && chat.dp) ? chat.dp : pfp} style={styles.img}/>
@@ -178,6 +172,7 @@ const SingleChat = ({navigation} : {navigation : any}) : JSX.Element => {
                         data = {chat.messages}
                         inverted={true}
                         renderItem={({item}) => {
+                            // console.log(item._id)
                             const prop = {
                                 reqUserId : chat.reqUserId,
                                 content : item.content,
@@ -188,7 +183,7 @@ const SingleChat = ({navigation} : {navigation : any}) : JSX.Element => {
                                 img : item.img
                             }
                             return (
-                                <MessageBox props={prop} key={item._id}/>
+                                <MessageBox props={prop} key={item && item._id ? item._id.toString() : item.sentOn.toString()+item?.content}/>
                             )
                         }}
                         keyExtractor={item => item._id}
